@@ -36,13 +36,14 @@ module.exports = {
       status: "succesfully loggedout",
     });
   },
-
-  //start from here
   confirmUser:async function (request, response) {
     const user = await User.verifyUser(request.params.token)
     response.status(200).json(user)
 
   },
 
+  forgotPassword: async function(request, response){},
+
+  resetPassword: async function(request, response){}
 
 };
