@@ -39,8 +39,10 @@ module.exports = {
 
   //start from here
   confirmUser:async function (request, response) {
-    await User.verifyUser(request.params.token)
-    response.status(200).send("Workinggggg")
+    const user = await User.verifyUser(request.params.token)
+    response.status(200).json(user)
 
   },
+
+
 };

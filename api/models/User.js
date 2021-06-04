@@ -11,6 +11,7 @@ const { sendConfirmationEmail } = require("./../services/EmailService.js");
  */
 
 module.exports = {
+  //DEFINING MONGO DB SCHEMA
   attributes: {
     name: {
       type: "string",
@@ -25,8 +26,7 @@ module.exports = {
       required: true,
     },
     token: {
-      type: "string",
-      required: true,
+      type: "string" || undefined,
     },
   },
   customToJSON: function () {
@@ -34,6 +34,7 @@ module.exports = {
     //this points at the document which is just created
   },
 
+  //BEFORE CREATE SAILS LIFE CYCLE
   beforeCreate: async function (user, cb) {
     //CHECK IF USER EXIST WITH THIS EMAIL
 
@@ -63,9 +64,10 @@ module.exports = {
       });
     });
   },
+
+  //FOR SIGNUP
   createUser: async function (inputs) {
     const { email, password } = inputs;
-    console.log(email);
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
 
     const data = await User.create({
@@ -79,7 +81,7 @@ module.exports = {
 
     return data;
   },
-
+  //USE FOR LOGGING IN USER
   loginUser: async function (inputs) {
     console.log(inputs);
     const email = inputs.email;
@@ -102,27 +104,28 @@ module.exports = {
     }
     return user;
   },
+
+  //VERIFY USER EMAIL IS VALID OR NOT BY SENDING EMAIL TO HIM
   verifyUser: async function (tokenFromURL) {
-    console.log(tokenFromURL);
     const user = await User.findOne({ token: tokenFromURL });
     if (!user) {
-      return "Please signup again with a valid email";
+      return {
+        message: "Failed",
+        data: {},
+      };
     }
-    delete user.token
-    console.log(user);
-
-    const updatedUser = await User.updateOne({ email: user.email }).set({
-      email : user.email,
-      name: user.name,
-      password: user.password,
-      createdAt : user.createdAt,
-      updatedAt:user.updatedAt,
-      token: undefined
-    });
-    // console.log(updatedUser);
-    // return token;
+    const updatedUser = await User.updateOne({ email: user.email })
+      .set({ token: " " })
+      .fetch();
+    const token = await sails.helpers.tokenGenerator(updatedUser.id);
+    return {
+      message: "success",
+      data: updatedUser,
+      token: token,
+    };
   },
 
+  //USE TO COMPARE PASSWORD FOR LOGGING IN
   comparePassword: async function (candidnatePassword, userPassword) {
     //candidatepass is coming from req.body.pass whereas userpassword is password that is hashed and stored in mongo
     return await bcrypt.compare(userPassword, candidnatePassword); //return bool
