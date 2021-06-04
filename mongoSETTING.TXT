@@ -1,0 +1,4 @@
+npm i sails-mongo
+add development script from slack in config > env
+Add   datastore: "MongodbServer", in model.js file at the starting
+YOURE GOOD TO GO!
