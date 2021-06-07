@@ -7,20 +7,30 @@
 
 const User = require("../models/User");
 const crypto = require("crypto");
-const { sendSuccessResponse } = require("../services/customResponse");
+const { sendSuccessResponse, sendErrorResponse, sendInvalidAuthResponse } = require("../services/customResponse");
 
 module.exports = {
   signup: async function (request, response) {
   
     var result = await User.createUser(request.body);
+    
+    if(!result.status)
+    {
+      sendInvalidAuthResponse(result, response)
+    }
   
     sendSuccessResponse(result, response)
+  
   },
 
   login: async function (request, response) {
  
     var result = await User.loginUser(request.body);
-    if(result)
+  
+    if(!result.status){
+     return sendInvalidAuthResponse(result, response)
+    }
+    
     sendSuccessResponse(result, response)
 
   },
@@ -42,7 +52,12 @@ module.exports = {
 
   confirmUser: async function (request, response) {
     
-    const user = await User.verifyUser(request.params.token);
+    const result = await User.verifyUser(request.params.token);
+    
+    if(!result.status)
+    {
+      sendInvalidAuthResponse(result, response)
+    }
 
     sendSuccessResponse(result, response)
   },
@@ -51,7 +66,10 @@ module.exports = {
     
     
     const result = await User.passwordFogotten(request.body);
-
+    if(result.status ==  false)
+    {
+      sendInvalidAuthResponse(result, response)
+    }
     sendSuccessResponse(result, response)
   },
 
@@ -66,6 +84,11 @@ module.exports = {
       password,
       confirmPassword
     );
+
+    if(!result.status)
+    {
+      sendInvalidAuthResponse(result, response)
+    }
 
     sendSuccessResponse(result, response)
   },
