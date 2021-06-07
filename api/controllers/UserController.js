@@ -6,7 +6,7 @@
  */
 
 const User = require("../models/User");
-const crypto = require('crypto')
+const crypto = require("crypto");
 
 module.exports = {
   signup: async function (request, response) {
@@ -36,14 +36,25 @@ module.exports = {
       status: "succesfully loggedout",
     });
   },
-  confirmUser:async function (request, response) {
-    const user = await User.verifyUser(request.params.token)
-    response.status(200).json(user)
-
+  confirmUser: async function (request, response) {
+    const user = await User.verifyUser(request.params.token);
+    response.status(200).json(user);
   },
 
-  forgotPassword: async function(request, response){},
+  forgotPassword: async function (request, response) {
+    const { email } = request.body;
+    if (!email) {
+      let result = { message: "Failed", data: "Please insert your email" };
+      response.status(200).send(result);
+    }
+    const result = await User.passwordFogotten(email);
 
-  resetPassword: async function(request, response){}
+    response.status(200).send(result);
+  },
 
+  resetPassword: async function (request, response) {
+    const {token} = request.params
+    const {password, confirmPassword} = request.body
+   await User.passwordReseting(token, password, confirmPassword)
+  },
 };

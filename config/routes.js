@@ -24,7 +24,9 @@ module.exports.routes = {
   "post /api/v1/user/signup": "UserController.signup",
   "post /api/v1/user/login" : "UserController.login",
   "get /api/v1/user/logout"  : "UserController.logout",
-  "get /api/v1/user/confirm/:token" : "UserController.confirmUser"
+  "get /api/v1/user/confirm/:token" : "UserController.confirmUser",
+  "post /api/v1/user/forgot-password" : "UserController.forgotPassword",
+  "post /api/v1/user/reset-password/:token" : "UserController.resetPassword"
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

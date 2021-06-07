@@ -2,7 +2,10 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 const ModelError = require("../services/ModelError");
-const { sendConfirmationEmail } = require("./../services/EmailService.js");
+const {
+  sendConfirmationEmail,
+  passwordRecoveryEmail,
+} = require("./../services/EmailService.js");
 /**
  * User.js
  *
@@ -129,5 +132,35 @@ module.exports = {
   comparePassword: async function (candidnatePassword, userPassword) {
     //candidatepass is coming from req.body.pass whereas userpassword is password that is hashed and stored in mongo
     return await bcrypt.compare(userPassword, candidnatePassword); //return bool
+  },
+
+  passwordFogotten: async function (email) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return { message: "Failed", data: "Sorry no user found with this email" };
+    }
+    const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
+    const updatedUser = await User.updateOne({ email: user.email })
+      .set({ token: verificationToken })
+      .fetch();
+    passwordRecoveryEmail(user.name, user.email, verificationToken);
+    return updatedUser;
+  },
+
+  passwordReseting: async function (tokenFromURL, password, confirmPassword) {
+    console.log(password + confirmPassword, "From User model");
+    const user = await User.findOne({ token: tokenFromURL });
+    if (!user) {
+      return { message: "Failed", data: "No user with this id found" };
+    }
+    if (!password || confirmPassword) {
+      return {
+        message: "Failed",
+        data: "password or confirm password missing",
+      };
+    }
+
+    
+
   },
 };
