@@ -53,8 +53,13 @@ module.exports = {
   },
 
   resetPassword: async function (request, response) {
-    const {token} = request.params
-    const {password, confirmPassword} = request.body
-   await User.passwordReseting(token, password, confirmPassword)
+    const { token } = request.params;
+    const { password, confirmPassword } = request.body;
+    const result = await User.passwordReseting(
+      token,
+      password,
+      confirmPassword
+    );
+    response.status(200).json(result);
   },
 };

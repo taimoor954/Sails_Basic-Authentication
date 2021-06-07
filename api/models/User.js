@@ -6,6 +6,8 @@ const {
   sendConfirmationEmail,
   passwordRecoveryEmail,
 } = require("./../services/EmailService.js");
+
+const { matchPassword } = require("./../services/passwordMatcher");
 /**
  * User.js
  *
@@ -148,19 +150,32 @@ module.exports = {
   },
 
   passwordReseting: async function (tokenFromURL, password, confirmPassword) {
-    console.log(password + confirmPassword, "From User model");
     const user = await User.findOne({ token: tokenFromURL });
     if (!user) {
       return { message: "Failed", data: "No user with this id found" };
     }
-    if (!password || confirmPassword) {
+    if (!password || !confirmPassword) {
       return {
         message: "Failed",
         data: "password or confirm password missing",
       };
     }
 
-    
+    const checkPassword = matchPassword(password, confirmPassword);
+    if (!checkPassword) {
+      return {
+        message: "Failed",
+        data: "Something wrong with password",
+      };
+    }
 
+    const updatedUser = await User.updateOne({ email: user.email }).set(
+      { token: " " },
+      { password: password }
+    );
+    return {
+      message: "Success",
+      data: updatedUser,
+    };
   },
 };
