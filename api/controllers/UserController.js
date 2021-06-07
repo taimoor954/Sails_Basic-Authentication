@@ -7,59 +7,66 @@
 
 const User = require("../models/User");
 const crypto = require("crypto");
+const { sendSuccessResponse } = require("../services/customResponse");
 
 module.exports = {
   signup: async function (request, response) {
+  
     var result = await User.createUser(request.body);
-    response.status(201).send(result);
+  
+    sendSuccessResponse(result, response)
   },
-  login: async function (request, response) {
-    var result = await User.loginUser(request.body);
-    console.log(result);
-    if (result.message == "Failed") {
-      return response.status(400).json(result);
-    }
-    const token = await sails.helpers.tokenGenerator(result.id);
 
-    response.status(200).json({
-      message: "success",
-      data: result,
-      token,
-    });
+  login: async function (request, response) {
+ 
+    var result = await User.loginUser(request.body);
+    if(result)
+    sendSuccessResponse(result, response)
+
   },
+  
+  
   logout: function (request, response) {
+    
     response.cookie("jwt", "loggedOut", {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true,
     }); //INVALID TOKEN WILL BE PROVIED AND THIS WILL BE EXPIRED WITHIN 10 SECONDS
+
     response.status(200).json({
       status: "succesfully loggedout",
     });
+
   },
+
+
   confirmUser: async function (request, response) {
+    
     const user = await User.verifyUser(request.params.token);
-    response.status(200).json(user);
+
+    sendSuccessResponse(result, response)
   },
 
   forgotPassword: async function (request, response) {
-    const { email } = request.body;
-    if (!email) {
-      let result = { message: "Failed", data: "Please insert your email" };
-      response.status(200).send(result);
-    }
-    const result = await User.passwordFogotten(email);
+    
+    
+    const result = await User.passwordFogotten(request.body);
 
-    response.status(200).send(result);
+    sendSuccessResponse(result, response)
   },
 
   resetPassword: async function (request, response) {
+
     const { token } = request.params;
+
     const { password, confirmPassword } = request.body;
+
     const result = await User.passwordReseting(
       token,
       password,
       confirmPassword
     );
-    response.status(200).json(result);
+
+    sendSuccessResponse(result, response)
   },
 };

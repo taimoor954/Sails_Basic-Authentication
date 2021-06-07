@@ -73,7 +73,17 @@ module.exports = {
   //FOR SIGNUP
   createUser: async function (inputs) {
     const { email, password } = inputs;
+
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
+
+    if(!inputs.name || !inputs.email || !inputs.password)
+    {
+      return {
+        status : false,
+        message : "Failed",
+        data : "Please fill the require fields"
+      }
+    }
 
     const data = await User.create({
       name: inputs.name,
@@ -81,54 +91,84 @@ module.exports = {
       password: inputs.password,
       token: verificationToken,
     }).fetch();
-    console.log(data.name, data.email, data.token);
     sendConfirmationEmail(data.name, data.email, verificationToken);
 
-    return data;
+    return  {
+      status : true,
+      message : "Success",
+      data : data
+    };
   },
+
+
   //USE FOR LOGGING IN USER
   loginUser: async function (inputs) {
-    console.log(inputs);
+   
     const email = inputs.email;
+  
     const password = inputs.password;
+  
     if (!email || !password) {
       return {
+        status: false,
         message: "Failed",
         data: "Please Enter your valid email and password",
       };
-    }
+    } 
+  
     const user = await User.findOne({
       email,
     });
 
     if (!user || !(await User.comparePassword(user.password, password))) {
       return {
+        status: false,
         message: "Failed",
         data: "Invalid email or password",
       };
     }
-    return user;
+
+    const token = await sails.helpers.tokenGenerator(user.id);
+  
+    return {
+      status: true,
+      message: "Success",
+      data:user,
+      token
+    };
+
+
   },
+
 
   //VERIFY USER EMAIL IS VALID OR NOT BY SENDING EMAIL TO HIM
   verifyUser: async function (tokenFromURL) {
+
     const user = await User.findOne({ token: tokenFromURL });
+ 
     if (!user) {
       return {
-        message: "Failed",
+        status : false,
+        message: "User not found from token",
         data: {},
       };
     }
+
     const updatedUser = await User.updateOne({ email: user.email })
       .set({ token: " " })
       .fetch();
+    
     const token = await sails.helpers.tokenGenerator(updatedUser.id);
+    
     return {
+      status : true,
       message: "success",
       data: updatedUser,
       token: token,
     };
+
   },
+
 
   //USE TO COMPARE PASSWORD FOR LOGGING IN
   comparePassword: async function (candidnatePassword, userPassword) {
@@ -136,24 +176,46 @@ module.exports = {
     return await bcrypt.compare(userPassword, candidnatePassword); //return bool
   },
 
-  passwordFogotten: async function (email) {
+
+  passwordFogotten: async function (body) {
+    
+    const { email } = body;
+
+    if (!email) {
+    
+      let result = { message: "Failed", data: "Please insert your email" };
+    
+      sendErrorResponse(result, response)
+        
+    }
+
     const user = await User.findOne({ email });
+ 
     if (!user) {
       return { message: "Failed", data: "Sorry no user found with this email" };
     }
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
+ 
     const updatedUser = await User.updateOne({ email: user.email })
       .set({ token: verificationToken })
       .fetch();
     passwordRecoveryEmail(user.name, user.email, verificationToken);
-    return updatedUser;
+ 
+    return {
+      status : true,
+      message: "success",
+      data: updatedUser,
+    }
   },
+
 
   passwordReseting: async function (tokenFromURL, password, confirmPassword) {
     const user = await User.findOne({ token: tokenFromURL });
+
     if (!user) {
       return { message: "Failed", data: "No user with this id found" };
     }
+
     if (!password || !confirmPassword) {
       return {
         message: "Failed",
@@ -162,6 +224,7 @@ module.exports = {
     }
 
     const checkPassword = matchPassword(password, confirmPassword);
+
     if (!checkPassword) {
       return {
         message: "Failed",
@@ -173,9 +236,11 @@ module.exports = {
       { token: " " },
       { password: password }
     );
+
     return {
       message: "Success",
       data: updatedUser,
     };
+
   },
 };
