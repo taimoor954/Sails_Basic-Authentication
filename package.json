@@ -16,7 +16,9 @@
     "sails": "^1.4.3",
     "sails-hook-grunt": "^4.0.0",
     "sails-hook-orm": "^3.0.2",
+    "sails-hook-req-validate": "^2.8.4",
     "sails-hook-sockets": "^2.0.0",
+    "sails-hook-validation-ev": "^0.0.2",
     "sails-mongo": "^2.0.0"
   },
   "devDependencies": {

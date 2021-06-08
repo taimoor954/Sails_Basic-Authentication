@@ -7,37 +7,45 @@
 
 const User = require("../models/User");
 const crypto = require("crypto");
-const { sendSuccessResponse, sendErrorResponse, sendInvalidAuthResponse } = require("../services/customResponse");
+var validate = require("sails-hook-validation-ev/lib/validate");
+
+const {
+  sendSuccessResponse,
+  sendErrorResponse,
+  sendInvalidAuthResponse,
+} = require("../services/customResponse");
+const { loginValidation } = require("../services/request-validation");
 
 module.exports = {
   signup: async function (request, response) {
-  
     var result = await User.createUser(request.body);
-    
-    if(!result.status)
-    {
-      sendInvalidAuthResponse(result, response)
+
+    if (!result.status) {
+      sendInvalidAuthResponse(result, response);
     }
-  
-    sendSuccessResponse(result, response)
-  
+
+    sendSuccessResponse(result, response);
   },
 
   login: async function (request, response) {
- 
-    var result = await User.loginUser(request.body);
-  
-    if(!result.status){
-     return sendInvalidAuthResponse(result, response)
+    validate(request);
+    const errors = await request.getValidationResult();
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
     }
-    
-    sendSuccessResponse(result, response)
+    console.log('Ther is sth wrong with inputs');
 
+
+    var result = await User.validate(request);
+    return
+    if (!result.status) {
+      return sendInvalidAuthResponse(result, response);
+    }
+
+    sendSuccessResponse(result, response);
   },
-  
-  
+
   logout: function (request, response) {
-    
     response.cookie("jwt", "loggedOut", {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true,
@@ -46,35 +54,27 @@ module.exports = {
     response.status(200).json({
       status: "succesfully loggedout",
     });
-
   },
 
-
   confirmUser: async function (request, response) {
-    
     const result = await User.verifyUser(request.params.token);
-    
-    if(!result.status)
-    {
-      sendInvalidAuthResponse(result, response)
+
+    if (!result.status) {
+      sendInvalidAuthResponse(result, response);
     }
 
-    sendSuccessResponse(result, response)
+    sendSuccessResponse(result, response);
   },
 
   forgotPassword: async function (request, response) {
-    
-    
     const result = await User.passwordFogotten(request.body);
-    if(result.status ==  false)
-    {
-      sendInvalidAuthResponse(result, response)
+    if (result.status == false) {
+      sendInvalidAuthResponse(result, response);
     }
-    sendSuccessResponse(result, response)
+    sendSuccessResponse(result, response);
   },
 
   resetPassword: async function (request, response) {
-
     const { token } = request.params;
 
     const { password, confirmPassword } = request.body;
@@ -85,11 +85,10 @@ module.exports = {
       confirmPassword
     );
 
-    if(!result.status)
-    {
-      sendInvalidAuthResponse(result, response)
+    if (!result.status) {
+      sendInvalidAuthResponse(result, response);
     }
 
-    sendSuccessResponse(result, response)
+    sendSuccessResponse(result, response);
   },
 };

@@ -38,7 +38,7 @@ module.exports = {
     return _.omit(this, ["password"]); //ignore password at time of response
     //this points at the document which is just created
   },
-
+ 
   //BEFORE CREATE SAILS LIFE CYCLE
   beforeCreate: async function (user, cb) {
     //CHECK IF USER EXIST WITH THIS EMAIL
@@ -69,6 +69,15 @@ module.exports = {
       });
     });
   },
+  
+  validate : function(request) {
+    request
+      .check("email")
+      .exists()
+      .withMessage("Please provide your email from, request validation");
+    request.check("password").exists();
+  },
+  
 
   //FOR SIGNUP
   createUser: async function (inputs) {
