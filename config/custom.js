@@ -13,7 +13,8 @@ module.exports.custom = {
   TOKEN_EXPIRY_IN: "90d",
   EMAIL:"517-2017@hamdard.edu",
   PASSWORD:"0qwe258456",
-  SERVER: 'http://localhost:1337'
+  SERVER: 'http://localhost:1337',
+  token_expiry:90
   /***************************************************************************
   *                                                                          *
   * Any other custom config this Sails app should use during development.    *

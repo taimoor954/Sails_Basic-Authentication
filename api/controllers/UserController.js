@@ -28,16 +28,8 @@ module.exports = {
   },
 
   login: async function (request, response) {
-    validate(request);
-    const errors = await request.getValidationResult();
-    if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() });
-    }
-    console.log('Ther is sth wrong with inputs');
+    var result = await User.loginUser(request.body);
 
-
-    var result = await User.validate(request);
-    return
     if (!result.status) {
       return sendInvalidAuthResponse(result, response);
     }

@@ -56,11 +56,12 @@ module.exports = {
       data: "No user found with this id",
     };
 
-    console.log('After user return');
     return {
       status: true,
       message: "Success",
       data: user,
     };
   },
+
+  
 };
