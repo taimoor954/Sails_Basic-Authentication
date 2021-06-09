@@ -22,3 +22,8 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 };
+
+
+//body 
+//email and pass
+//emai
