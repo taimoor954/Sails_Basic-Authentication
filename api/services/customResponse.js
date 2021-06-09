@@ -21,3 +21,9 @@ exports.sendSuccessResponse = function (happyMsg, response) {
 
   response.status(200).json(happyMsg);
 };
+
+exports.sendNotFoundResponse = function (notFound, response) {
+  delete notFound.status;
+
+  response.status(404).json(notFound);
+};

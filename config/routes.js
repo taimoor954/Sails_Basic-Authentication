@@ -8,6 +8,7 @@
  * https://sailsjs.com/anatomy/config/routes-js
  */
 const userController = "UserController";
+const ideasController = "IdeasController"
 module.exports.routes = {
   /***************************************************************************
    *                                                                          *
@@ -26,9 +27,16 @@ module.exports.routes = {
   "get /api/v1/user/confirm/:token": userController + ".confirmUser",
   "post /api/v1/user/forgot-password":   userController + ".forgotPassword",
   "post /api/v1/user/reset-password/:token": userController + ".resetPassword",
+  
+  
+  "post /api/v1/ideas/create" : ideasController + ".createIdeas",
+  "get /api/v1/ideas/get-one-idea/:Id" : ideasController + ".getOne"
   /***************************************************************************
    *                                                                          *
-   * More custom routes here...                                               *
+  
+
+
+  * More custom routes here...                                               *
    * (See https://sailsjs.com/config/routes for examples.)                    *
    *                                                                          *
    * If a request to a URL doesn't match any of the routes in this file, it   *

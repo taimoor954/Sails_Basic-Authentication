@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const getUserfromId = require("../services/getUserfromId");
 
 const ModelError = require("../services/ModelError");
 const {
@@ -82,7 +83,6 @@ module.exports = {
   //FOR SIGNUP
   createUser: async function (inputs) {
     const { email, password } = inputs;
-
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
 
     if(!inputs.name || !inputs.email || !inputs.password)
@@ -90,7 +90,8 @@ module.exports = {
       return {
         status : false,
         message : "Failed",
-        data : "Please fill the require fields"
+        data : "Please fill the require fields",
+        
       }
     }
 
@@ -105,7 +106,8 @@ module.exports = {
     return  {
       status : true,
       message : "Success",
-      data : data
+      data : data,
+      user:user
     };
   },
 
@@ -252,4 +254,10 @@ module.exports = {
     };
 
   },
+
+  getOneUser : async function()
+  {
+    
+  }
+
 };
