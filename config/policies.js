@@ -9,7 +9,8 @@
  */
 
 module.exports.policies = {
-
+  '*': ['IsLoggedIn'],
+  
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *
