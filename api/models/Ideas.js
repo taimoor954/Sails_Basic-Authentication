@@ -23,6 +23,7 @@ module.exports = {
   },
 
   createIdeas: async function (inputs) {
+    console.log(inputs);
     const { title, body, userId } = inputs;
     const user = await getUserFromId(userId);
 
@@ -50,11 +51,12 @@ module.exports = {
   getOneIdea: async function (inputs) {
     const Id = inputs;
     const user = await getOneFactoryById(Ideas, Id);
-    if (!user) return {
-      status: false,
-      message: "Failed",
-      data: "No user found with this id",
-    };
+    if (!user)
+      return {
+        status: false,
+        message: "Failed",
+        data: "No user found with this id",
+      };
 
     return {
       status: true,
@@ -63,5 +65,25 @@ module.exports = {
     };
   },
 
-  
+  getUserSpecificIdeas: async function (inputs) {
+    const { Id } = inputs;
+    const userIdeas = await Ideas.find({ "user.id": Id }).meta({
+      enableExperimentalDeepTargets: true,
+    });
+
+    console.log(userIdeas.length);
+    if (userIdeas.length < 1) {
+      return {
+        status: false,
+        message: "Failed",
+        data: "You have not created any idea yet",
+      };
+    }
+
+    return {
+      status: true,
+      message: "Success",
+      data: userIdeas,
+    };
+  },
 };

@@ -116,7 +116,6 @@ module.exports = {
     const user = await User.findOne({
       email,
     });
-    // console.log(user);
     if (!user || !(await User.comparePassword(user.password, password))) {
       return {
         status: false,
@@ -125,7 +124,6 @@ module.exports = {
       };
     }
 
-    // const token = await sails.helpers.tokenGenerator(user.id);
     const token = await Token.createToken(user.id);
     return {
       status: true,
@@ -158,7 +156,7 @@ module.exports = {
       message: "success",
       data: updatedUser,
       token: token,
-      message : "Youre good to go!!!"
+      message: "Youre good to go!!!",
     };
   },
 

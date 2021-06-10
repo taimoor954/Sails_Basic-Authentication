@@ -16,9 +16,16 @@ module.exports = {
     const result = await Ideas.createIdeas(request.body);
     sendSuccessResponse(result, response);
   },
+
   getOne: async function (request, response) {
     const result = await Ideas.getOneIdea(request.params.Id);
     if (!result.status) return sendNotFoundResponse(result, response);
+    sendSuccessResponse(result, response);
+  },
+
+  getYourIdeas: async function (request, response) {
+    const result = await Ideas.getUserSpecificIdeas(request.params);
+    if (!result.status) return sendSuccessResponse(result, response);
     sendSuccessResponse(result, response);
   },
 };
