@@ -9,15 +9,19 @@
  */
 
 module.exports.policies = {
-  '*': ['IsLoggedIn'],
-  
+  "*": ["IsLoggedIn"],
+  // Allow anyone to access the signup and verify user action, even if they're not logged in.
+  UserController: {
+    signup: true,
+    confirmUser:true
+  },
+
   /***************************************************************************
-  *                                                                          *
-  * Default policy for all controllers and actions, unless overridden.       *
-  * (`true` allows public access)                                            *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Default policy for all controllers and actions, unless overridden.       *
+   * (`true` allows public access)                                            *
+   *                                                                          *
+   ***************************************************************************/
 
   // '*': true,
-
 };

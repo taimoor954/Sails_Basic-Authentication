@@ -90,13 +90,14 @@ module.exports = {
       password: inputs.password,
       token: verificationToken,
     }).fetch();
+    delete data.token;
     sendConfirmationEmail(data.name, data.email, verificationToken);
 
     return {
       status: true,
       message: "Success",
       data: data,
-      user: user,
+      check: "Please click on the link send to your mail",
     };
   },
 
@@ -125,7 +126,7 @@ module.exports = {
     }
 
     // const token = await sails.helpers.tokenGenerator(user.id);
-    const token = await Token.createToken(user.id)
+    const token = await Token.createToken(user.id);
     return {
       status: true,
       message: "Success",
@@ -150,13 +151,14 @@ module.exports = {
       .set({ token: " " })
       .fetch();
 
-    const token = await sails.helpers.tokenGenerator(updatedUser.id);
+    const token = await Token.createToken(updatedUser.id);
 
     return {
       status: true,
       message: "success",
       data: updatedUser,
       token: token,
+      message : "Youre good to go!!!"
     };
   },
 
