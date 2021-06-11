@@ -38,10 +38,10 @@ module.exports = {
       type: "string",
       defaultsTo: "user",
     },
-    status :  {
-      type : "string",
-      defaultsTo : "Pending"
-    }
+    status: {
+      type: "string",
+      defaultsTo: "Pending",
+    },
   },
   customToJSON: function () {
     return _.omit(this, ["password"]); //ignore password at time of response
@@ -112,7 +112,6 @@ module.exports = {
   //USE FOR LOGGING IN USER
   loginUser: async function (inputs) {
     const { email, password } = inputs;
-    console.log(email, password);
     if (!email || !password) {
       return {
         status: false,
@@ -131,7 +130,13 @@ module.exports = {
         data: "Invalid email or password",
       };
     }
-
+    if (user.status != "Active") {
+      return {
+        status: false,
+        message: "Failed",
+        data: "Youre not a verified User. Please check your mail to verify yourself",
+      };
+    }
     const token = await Token.createToken(user.id);
     return {
       status: true,
@@ -153,11 +158,13 @@ module.exports = {
       };
     }
     const updateProperties = {
-      token : " ",
-      status : "Active"
-    }
+      token: " ",
+      status: "Active",
+    };
 
-    const updatedUser = await User.updateOne({ email: user.email }).set(updateProperties);
+    const updatedUser = await User.updateOne({ email: user.email }).set(
+      updateProperties
+    );
 
     const token = await Token.createToken(updatedUser.id);
 

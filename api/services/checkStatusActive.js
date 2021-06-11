@@ -1,8 +1,5 @@
-
 module.exports = async function (id, response) {
-    console.log(id);
-    const user = await User.findOne({_id : id});
-  console.log(user);
+  const user = await User.findOne({ _id: id });
 
   if (user.status != "Active") {
     return response.status(400).json({

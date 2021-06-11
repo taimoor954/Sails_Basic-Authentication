@@ -17,7 +17,6 @@ module.exports = async function (request, response, next) {
       message: "Youre token is corrupted. Login again ",
     });
   }
-  console.log(token.userId, "HSUHSUHSUS");
   await checkStatusActive(token.userId, response)
 
   if (!request.body) {
