@@ -13,6 +13,7 @@ const {
   sendSuccessResponse,
   sendErrorResponse,
   sendInvalidAuthResponse,
+  sendNotFoundResponse,
 } = require("../services/customResponse");
 const { loginValidation } = require("../services/request-validation");
 
@@ -85,4 +86,12 @@ module.exports = {
   },
 
   getAllUsers: async function (request, response) {},
+
+  getUserById: async function (request, response) {
+    const result = await User.getOneUser(request.params);
+    if (!result.status) {
+      return sendNotFoundResponse(result, response);
+    }
+    return sendSuccessResponse(result, response);
+  },
 };

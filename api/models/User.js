@@ -245,5 +245,20 @@ module.exports = {
     };
   },
 
-  getOneUser: async function () {},
+  getOneUser: async function (inputs) {
+    const { Id } = inputs;
+    const user = await User.findOne({ _id: Id });
+    if (!user) {
+      return {
+        status: false,
+        message: "Failed",
+        data: "user with this id not found",
+      };
+    }
+    return {
+      status: true,
+      message: "Success",
+      data: user,
+    };
+  },
 };

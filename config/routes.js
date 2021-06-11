@@ -28,7 +28,8 @@ module.exports.routes = {
   "get /api/v1/user/get-all-users" : userController + ".getAllUsers",
   "post /api/v1/user/forgot-password":   userController + ".forgotPassword",
   "post /api/v1/user/reset-password/:token": userController + ".resetPassword",
-  
+  "get /api/v1/user/get-one-by-id/:Id" : userController + ".getUserById", 
+   
   
   "post /api/v1/ideas/create" : ideasController + ".createIdeas",
   "get /api/v1/ideas/get-one-idea/:Id" : ideasController + ".getOne",
