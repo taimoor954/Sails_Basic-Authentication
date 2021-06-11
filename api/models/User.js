@@ -43,6 +43,7 @@ module.exports = {
       defaultsTo: "Pending",
     },
   },
+
   customToJSON: function () {
     return _.omit(this, ["password"]); //ignore password at time of response
     //this points at the document which is just created
@@ -51,6 +52,7 @@ module.exports = {
   //BEFORE CREATE SAILS LIFE CYCLE
   beforeCreate: async function (user, cb) {
     //CHECK IF USER EXIST WITH THIS EMAIL
+    console.log("Before creat function");
 
     const data = await User.findOne({
       email: user.email,
@@ -78,9 +80,15 @@ module.exports = {
       });
     });
   },
+  //AFTER CREATING USER SEND MAIL TO HIS ACCOUNT
+  afterCreate: async function (user, cb) {
+    sendConfirmationEmail(user.name, user.email, user.token);
+    cb();
+  },
 
   //FOR SIGNUP
   createUser: async function (inputs) {
+    console.log("Create user function");
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
 
     if (!inputs.name || !inputs.email || !inputs.password) {
@@ -99,7 +107,7 @@ module.exports = {
       role: inputs.role,
     }).fetch();
     delete data.token;
-    sendConfirmationEmail(data.name, data.email, verificationToken);
+    // sendConfirmationEmail(data.name, data.email, verificationToken);
 
     return {
       status: true,
@@ -263,6 +271,7 @@ module.exports = {
     };
   },
 
+  //GET ALL USER BY ADMIN ONLY
   getAllUser: async function () {
     const users = await User.find();
     if (users.length == 0) {

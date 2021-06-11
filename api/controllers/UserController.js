@@ -18,6 +18,7 @@ const {
 const { loginValidation } = require("../services/request-validation");
 
 module.exports = {
+  //CREATE NEW USER/ADMIN
   signup: async function (request, response) {
     var result = await User.createUser(request.body);
 
@@ -28,6 +29,7 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 
+  //LOGIN YOUR ACCOUNT
   login: async function (request, response) {
     var result = await User.loginUser(request.body);
 
@@ -38,6 +40,7 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 
+  //LOGOUT YOUR ACCOUNT
   logout: function (request, response) {
     response.cookie("jwt", "loggedOut", {
       expires: new Date(Date.now() + 10 * 1000),
@@ -49,6 +52,7 @@ module.exports = {
     });
   },
 
+  //CONFIRM USER THROUGH EMAIL
   confirmUser: async function (request, response) {
     const result = await User.verifyUser(request.params.token);
 
@@ -59,7 +63,7 @@ module.exports = {
     return sendSuccessResponse(result, response);
   },
 
-  //FORGOT PASSWORD 
+  //FORGOT PASSWORD
   forgotPassword: async function (request, response) {
     const result = await User.passwordFogotten(request.body);
     if (result.status == false) {
@@ -68,7 +72,7 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 
-  //
+  //RESET PASSWORD
   resetPassword: async function (request, response) {
     const { token } = request.params;
 
