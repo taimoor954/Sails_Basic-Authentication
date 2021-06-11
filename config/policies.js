@@ -13,16 +13,21 @@ module.exports.policies = {
   // Allow anyone to access the signup and verify user action, even if they're not logged in.
   UserController: {
     signup: true,
-    confirmUser:true,
-    login:true,
-    getUserById : ['isLoggedin', 'isAdmin']
-    // getAllUsers : ["isAdmin", "IsLoggedIn"]
+    confirmUser: true,
+    login: true,
+    getUserById: ["isLoggedin", "isAdmin"],
+    getAll: ["isLoggedin", "isAdmin"],
+    //DISABLING BLUE PRINT
+    create: false,
+    delete: false,
+    update: false,
+    destroy: false,
   },
 
-  IdeasController : {
-    createIdeas : "isLoggedIn",
-    getYourIdeas : "isLoggedIn"
-  }
+  IdeasController: {
+    createIdeas: "isLoggedIn",
+    getYourIdeas: "isLoggedIn",
+  },
   /***************************************************************************
    *                                                                          *
    * Default policy for all controllers and actions, unless overridden.       *

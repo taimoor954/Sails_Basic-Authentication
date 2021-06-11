@@ -59,6 +59,7 @@ module.exports = {
     return sendSuccessResponse(result, response);
   },
 
+  //FORGOT PASSWORD 
   forgotPassword: async function (request, response) {
     const result = await User.passwordFogotten(request.body);
     if (result.status == false) {
@@ -67,6 +68,7 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 
+  //
   resetPassword: async function (request, response) {
     const { token } = request.params;
 
@@ -85,13 +87,18 @@ module.exports = {
     sendSuccessResponse(result, response);
   },
 
-  getAllUsers: async function (request, response) {},
-
+  //GET ONE USER ONLY ACCESSIBLE FOR ADMIN
   getUserById: async function (request, response) {
     const result = await User.getOneUser(request.params);
     if (!result.status) {
       return sendNotFoundResponse(result, response);
     }
+    return sendSuccessResponse(result, response);
+  },
+
+  //GET All USER ONLY ACCESSIBLE FOR ADMIN
+  getAll: async function (request, response) {
+    const result = await User.getAllUser();
     return sendSuccessResponse(result, response);
   },
 };

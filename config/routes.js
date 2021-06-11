@@ -8,7 +8,7 @@
  * https://sailsjs.com/anatomy/config/routes-js
  */
 const userController = "UserController";
-const ideasController = "IdeasController"
+const ideasController = "IdeasController";
 module.exports.routes = {
   /***************************************************************************
    *                                                                          *
@@ -25,15 +25,15 @@ module.exports.routes = {
   "post /api/v1/user/login": userController + ".login",
   "get /api/v1/user/logout": userController + ".logout",
   "get /api/v1/user/confirm/:token": userController + ".confirmUser",
-  "get /api/v1/user/get-all-users" : userController + ".getAllUsers",
-  "post /api/v1/user/forgot-password":   userController + ".forgotPassword",
+  "get /api/v1/user/get-all-users": userController + ".getAllUsers",
+  "post /api/v1/user/forgot-password": userController + ".forgotPassword",
   "post /api/v1/user/reset-password/:token": userController + ".resetPassword",
-  "get /api/v1/user/get-one-by-id/:Id" : userController + ".getUserById", 
-   
+  "get /api/v1/user/get-one-by-id/:Id": userController + ".getUserById",
+  "get /api/v1/user/get-all-user": userController + ".getAll",
   
-  "post /api/v1/ideas/create" : ideasController + ".createIdeas",
-  "get /api/v1/ideas/get-one-idea/:Id" : ideasController + ".getOne",
-  "get /api/v1/ideas/get-my-ideas/:Id" : ideasController + ".getYourIdeas"
+  "post /api/v1/ideas/create": ideasController + ".createIdeas",
+  "get /api/v1/ideas/get-one-idea/:Id": ideasController + ".getOne",
+  "get /api/v1/ideas/get-my-ideas/:Id": ideasController + ".getYourIdeas",
   /***************************************************************************
    *                                                                          *
   

@@ -245,6 +245,7 @@ module.exports = {
     };
   },
 
+  //GET ONE USER ONLY ACCESSIBLE FOR ADMIN
   getOneUser: async function (inputs) {
     const { Id } = inputs;
     const user = await User.findOne({ _id: Id });
@@ -259,6 +260,22 @@ module.exports = {
       status: true,
       message: "Success",
       data: user,
+    };
+  },
+
+  getAllUser: async function () {
+    const users = await User.find();
+    if (users.length == 0) {
+      return {
+        status: true,
+        message: "Success",
+        data: "You have 0 user right now.",
+      };
+    }
+    return {
+      status: true,
+      message: "Success",
+      data: users,
     };
   },
 };
