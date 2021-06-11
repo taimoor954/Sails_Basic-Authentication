@@ -52,10 +52,10 @@ module.exports = {
     const result = await User.verifyUser(request.params.token);
 
     if (!result.status) {
-      sendInvalidAuthResponse(result, response);
+      return sendInvalidAuthResponse(result, response);
     }
 
-    sendSuccessResponse(result, response);
+    return sendSuccessResponse(result, response);
   },
 
   forgotPassword: async function (request, response) {
@@ -83,4 +83,6 @@ module.exports = {
 
     sendSuccessResponse(result, response);
   },
+
+  getAllUsers: async function (request, response) {},
 };

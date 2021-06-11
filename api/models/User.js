@@ -34,6 +34,14 @@ module.exports = {
     token: {
       type: "string" || undefined,
     },
+    role: {
+      type: "string",
+      defaultsTo: "user",
+    },
+    status :  {
+      type : "string",
+      defaultsTo : "Pending"
+    }
   },
   customToJSON: function () {
     return _.omit(this, ["password"]); //ignore password at time of response
@@ -73,7 +81,6 @@ module.exports = {
 
   //FOR SIGNUP
   createUser: async function (inputs) {
-    const { email, password } = inputs;
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
 
     if (!inputs.name || !inputs.email || !inputs.password) {
@@ -89,6 +96,7 @@ module.exports = {
       email: inputs.email,
       password: inputs.password,
       token: verificationToken,
+      role: inputs.role,
     }).fetch();
     delete data.token;
     sendConfirmationEmail(data.name, data.email, verificationToken);
@@ -144,10 +152,12 @@ module.exports = {
         data: {},
       };
     }
+    const updateProperties = {
+      token : " ",
+      status : "Active"
+    }
 
-    const updatedUser = await User.updateOne({ email: user.email })
-      .set({ token: " " })
-      .fetch();
+    const updatedUser = await User.updateOne({ email: user.email }).set(updateProperties);
 
     const token = await Token.createToken(updatedUser.id);
 

@@ -71,7 +71,6 @@ module.exports = {
       enableExperimentalDeepTargets: true,
     });
 
-    console.log(userIdeas.length);
     if (userIdeas.length < 1) {
       return {
         status: false,

@@ -25,6 +25,7 @@ module.exports.routes = {
   "post /api/v1/user/login": userController + ".login",
   "get /api/v1/user/logout": userController + ".logout",
   "get /api/v1/user/confirm/:token": userController + ".confirmUser",
+  "get /api/v1/user/get-all-users" : userController + ".getAllUsers",
   "post /api/v1/user/forgot-password":   userController + ".forgotPassword",
   "post /api/v1/user/reset-password/:token": userController + ".resetPassword",
   

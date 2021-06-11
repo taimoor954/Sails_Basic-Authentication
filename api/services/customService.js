@@ -17,3 +17,7 @@ exports.setExpiryTime = () => {
   let limit = sails.config.custom.token_expiry;
   return Date.now() + limit * 24 * 60 * 60 * 1000;
 };
+
+exports.checkActiveUser = (user) => {
+
+}

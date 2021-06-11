@@ -9,12 +9,13 @@
  */
 
 module.exports.policies = {
-  "*": ["IsLoggedIn"],
+  "*": ["IsLoggedIn", "isAdmin"],
   // Allow anyone to access the signup and verify user action, even if they're not logged in.
   UserController: {
     signup: true,
     confirmUser:true,
-    login:true
+    login:true,
+    // getAllUsers : ["isAdmin", "IsLoggedIn"]
   },
 
   IdeasController : {

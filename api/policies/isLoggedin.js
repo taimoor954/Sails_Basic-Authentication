@@ -1,3 +1,5 @@
+const checkStatusActive = require("../services/checkStatusActive");
+
 module.exports = async function (request, response, next) {
   if (!request.headers.authorization) {
     return response.status(400).json({
@@ -7,11 +9,6 @@ module.exports = async function (request, response, next) {
   }
   const tokenFromHeader = request.headers.authorization.split(" ")[1];
 
-  if (!request.header("authorization")) {
-    console.log(request.header("authorization"));
-    next();
-    return;
-  }
   const token = await Token.findOne({ accessToken: tokenFromHeader });
 
   if (!token) {
@@ -20,14 +17,14 @@ module.exports = async function (request, response, next) {
       message: "Youre token is corrupted. Login again ",
     });
   }
+  console.log(token.userId, "HSUHSUHSUS");
+  await checkStatusActive(token.userId, response)
 
   if (!request.body) {
     next();
-    return
+    return;
   }
   request.body.userId = token.userId;
-
-  // console.log(request.body);
 
   next();
 };
