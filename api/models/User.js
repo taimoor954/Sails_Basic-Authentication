@@ -88,7 +88,6 @@ module.exports = {
 
   //FOR SIGNUP
   createUser: async function (inputs) {
-    console.log("Create user function");
     const verificationToken = crypto.randomBytes(32).toString("hex"); //without enc
 
     if (!inputs.name || !inputs.email || !inputs.password) {
@@ -107,7 +106,6 @@ module.exports = {
       role: inputs.role,
     }).fetch();
     delete data.token;
-    // sendConfirmationEmail(data.name, data.email, verificationToken);
 
     return {
       status: true,

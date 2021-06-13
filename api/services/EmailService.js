@@ -25,7 +25,6 @@ exports.passwordRecoveryEmail = (username, email, confirmationCode) => {
   });
 };
 
-
 // import nodemailer from "nodemailer";
 // export const transport = nodemailer.createTransport({
 //     host: "smtp.gmail.com",

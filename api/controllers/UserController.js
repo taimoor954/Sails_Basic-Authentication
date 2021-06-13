@@ -5,9 +5,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-const User = require("../models/User");
 const crypto = require("crypto");
-var validate = require("sails-hook-validation-ev/lib/validate");
 
 const {
   sendSuccessResponse,
@@ -18,6 +16,8 @@ const {
 const { loginValidation } = require("../services/request-validation");
 
 module.exports = {
+  _config: { actions: false, rest: false, shortcuts: false },
+
   //CREATE NEW USER/ADMIN
   signup: async function (request, response) {
     var result = await User.createUser(request.body);
@@ -50,6 +50,7 @@ module.exports = {
     response.status(200).json({
       status: "succesfully loggedout",
     });
+  
   },
 
   //CONFIRM USER THROUGH EMAIL
