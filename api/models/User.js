@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { generateJwtToken } = require("../services/customService");
 const getUserfromId = require("../services/getUserfromId");
 
 const ModelError = require("../services/ModelError");
@@ -143,7 +144,8 @@ module.exports = {
         data: "Youre not a verified User. Please check your mail to verify yourself",
       };
     }
-    const token = await Token.createToken(user.id);
+    const token = generateJwtToken(user.id);
+
     return {
       status: true,
       message: "Success",
@@ -172,7 +174,10 @@ module.exports = {
       updateProperties
     );
 
-    const token = await Token.createToken(updatedUser.id);
+    //MANUALLY CREATED TOKEN
+    // const token = await Token.createToken(updatedUser.id);
+    
+    const token =  generateJwtToken(updatedUser.id)
 
     return {
       status: true,

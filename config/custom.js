@@ -10,7 +10,7 @@
 
 module.exports.custom = {
   JWT_STRING : "MuhammadTaimoorString",
-  TOKEN_EXPIRY_IN: "90d",
+  TOKEN_EXPIRY_IN_JWT: "90d",
   EMAIL:"517-2017@hamdard.edu",
   PASSWORD:"0qwe258456",
   SERVER: 'http://localhost:1337',

@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 exports.generateUUID = function () {
   var d = new Date().getTime();
   if (
@@ -18,3 +20,17 @@ exports.setExpiryTime = () => {
   return Date.now() + limit * 24 * 60 * 60 * 1000;
 };
 
+exports.generateJwtToken = (id) => {
+  return jwt.sign(
+    {
+      id: id,
+    },
+    sails.config.custom.JWT_STRING,
+    {
+      ///token will be expiredin 90 days for securitty reasons
+      expiresIn: sails.config.custom.TOKEN_EXPIRY_IN_JWT,
+    }
+  );
+};
+
+exports.createSendToken = () => {};
