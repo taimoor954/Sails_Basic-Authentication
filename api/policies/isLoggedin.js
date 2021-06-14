@@ -18,9 +18,7 @@ module.exports = async function (request, response, next) {
       new AppError("The user belonging to this token is no longer exist", 401)
     );
 
-  
-  
-    // console.log(freshUser, 'Fresh user from is logged in');
+  // console.log(freshUser, 'Fresh user from is logged in');
   // const token = await Token.findOne({ accessToken: tokenFromHeader });
   // if (!token) {
   //   return response.status(400).json({
@@ -28,8 +26,6 @@ module.exports = async function (request, response, next) {
   //     message: "Youre token is corrupted. Login again ",
   //   });
   // }
-
-
 
   await checkStatusActive(freshUser.id, response);
 

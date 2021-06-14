@@ -176,8 +176,8 @@ module.exports = {
 
     //MANUALLY CREATED TOKEN
     // const token = await Token.createToken(updatedUser.id);
-    
-    const token =  generateJwtToken(updatedUser.id)
+
+    const token = generateJwtToken(updatedUser.id);
 
     return {
       status: true,

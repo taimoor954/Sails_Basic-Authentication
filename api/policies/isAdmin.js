@@ -4,7 +4,7 @@ module.exports = async function (request, response, next) {
   if (!request.headers.authorization) {
     return response.status(400).json({
       status: false,
-      message: "Youre not logged is. Please login to access ",
+      message: "Youre not logged in. Please login to access ",
     });
   }
   const tokenFromHeader = request.headers.authorization.split(" ")[1];

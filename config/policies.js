@@ -19,9 +19,14 @@ module.exports.policies = {
     //BOTH CAN WORK WITHOUT LOGIN AND ISADMIN POLICY
     confirmUser: true,
     login: true,
+    forgotPassword: true,
+    resetPassword: true,
+
     //BOTH WILL CHECK ISLOGGEDIN AND IS ADMIN BEFORE WORKING
     getUserById: ["isLoggedin", "isAdmin"],
+    logout: ['isLoggedin'],
     getAll: ["isLoggedin", "isAdmin"],
+    getUserById: ["isLoggedin", "isAdmin"],
   },
 
   IdeasController: {
@@ -29,8 +34,7 @@ module.exports.policies = {
     "*": false,
     createIdeas: "isLoggedin",
     getYourIdeas: "isLoggedin",
-    getOne : ['isLoggedin', 'isAdmin'],
-
+    getOne: ["isLoggedin", "isAdmin"],
   },
   /***************************************************************************
    *                                                                          *
