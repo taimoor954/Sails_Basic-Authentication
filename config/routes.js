@@ -33,7 +33,7 @@ module.exports.routes = {
   
   "post /api/v1/ideas/create": ideasController + ".createIdeas",
   "get /api/v1/ideas/get-one-idea/:Id": ideasController + ".getOne",
-  "get /api/v1/ideas/get-my-ideas/:Id": ideasController + ".getYourIdeas",
+  "get /api/v1/ideas/get-my-ideas": ideasController + ".getYourIdeas",
   /***************************************************************************
    *                                                                          *
   

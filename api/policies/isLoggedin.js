@@ -10,7 +10,6 @@ module.exports = async function (request, response, next) {
   const tokenFromHeader = request.headers.authorization.split(" ")[1];
 
   const token = await Token.findOne({ accessToken: tokenFromHeader });
-
   if (!token) {
     return response.status(400).json({
       status: false,
@@ -19,11 +18,6 @@ module.exports = async function (request, response, next) {
   }
   await checkStatusActive(token.userId, response);
 
-  if (!request.body) {
-    next();
-    return;
-  }
-  request.body.userId = token.userId;
-
+  request.userId = token.userId;
   next();
 };

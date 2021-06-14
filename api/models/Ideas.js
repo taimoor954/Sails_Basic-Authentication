@@ -23,9 +23,8 @@ module.exports = {
   },
 
   createIdeas: async function (inputs) {
-    console.log(inputs);
-    const { title, body, userId } = inputs;
-    const user = await getUserFromId(userId);
+    const { title, body } = inputs.body;
+    const user = await getUserFromId(inputs.userId);
 
     if (!title || !body || !user) {
       return {
@@ -49,7 +48,7 @@ module.exports = {
   },
 
   getOneIdea: async function (inputs) {
-    const Id = inputs;
+    const {Id} = inputs.params;
     const user = await getOneFactoryById(Ideas, Id);
     if (!user)
       return {
@@ -66,10 +65,10 @@ module.exports = {
   },
 
   getUserSpecificIdeas: async function (inputs) {
-    const { Id } = inputs;
-    const userIdeas = await Ideas.find({ "user.id": Id }).meta({
+    const userIdeas = await Ideas.find({ "user.id": inputs.userId }).meta({
       enableExperimentalDeepTargets: true,
     });
+    console.log(userIdeas);
 
     if (userIdeas.length < 1) {
       return {

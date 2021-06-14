@@ -13,18 +13,19 @@ const {
 
 module.exports = {
   createIdeas: async function (request, response) {
-    const result = await Ideas.createIdeas(request.body);
+    const result = await Ideas.createIdeas(request);
     sendSuccessResponse(result, response);
   },
 
   getOne: async function (request, response) {
-    const result = await Ideas.getOneIdea(request.params.Id);
+    console.log(request.params);
+    const result = await Ideas.getOneIdea(request);
     if (!result.status) return sendNotFoundResponse(result, response);
     sendSuccessResponse(result, response);
   },
 
   getYourIdeas: async function (request, response) {
-    const result = await Ideas.getUserSpecificIdeas(request.params);
+    const result = await Ideas.getUserSpecificIdeas(request);
     if (!result.status) return sendSuccessResponse(result, response);
     sendSuccessResponse(result, response);
   },

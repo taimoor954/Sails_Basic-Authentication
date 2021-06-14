@@ -20,6 +20,7 @@ module.exports = async function (request, response, next) {
   //userid from there and then search for user through that id
   const userId = token.userId;
   const user = await User.findOne({ _id: userId });
+  console.log(user);
   //check role of a user
   if (user.role != "Admin") {
     //if not admin throw error

@@ -6,6 +6,7 @@
  */
 
 const crypto = require("crypto");
+const jwt = require('jsonwebtoken')
 
 const {
   sendSuccessResponse,
@@ -16,7 +17,6 @@ const {
 const { loginValidation } = require("../services/request-validation");
 
 module.exports = {
-  _config: { actions: false, rest: false, shortcuts: false },
 
   //CREATE NEW USER/ADMIN
   signup: async function (request, response) {

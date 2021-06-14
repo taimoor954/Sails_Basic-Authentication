@@ -26,10 +26,10 @@ module.exports.policies = {
 
   IdeasController: {
     //DISABLING ALL BLUE PRINT
-    "*": false,
+    // "*": false,
 
-    createIdeas: "isLoggedIn",
-    getYourIdeas: "isLoggedIn",
+    createIdeas: "isLoggedin",
+    getYourIdeas: "isLoggedin",
   },
   /***************************************************************************
    *                                                                          *
