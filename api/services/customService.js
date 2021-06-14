@@ -18,6 +18,3 @@ exports.setExpiryTime = () => {
   return Date.now() + limit * 24 * 60 * 60 * 1000;
 };
 
-exports.checkActiveUser = (user) => {
-
-}
