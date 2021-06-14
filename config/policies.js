@@ -11,20 +11,23 @@
 module.exports.policies = {
   "*": ["isLoggedin", "isAdmin"],
   // Allow anyone to access the signup and verify user action, even if they're not logged in.
+
   UserController: {
     signup: true,
+    //DISABLING ALL BLUE PRINT
+    "*": false,
+    //BOTH CAN WORK WITHOUT LOGIN AND ISADMIN POLICY
     confirmUser: true,
     login: true,
+    //BOTH WILL CHECK ISLOGGEDIN AND IS ADMIN BEFORE WORKING
     getUserById: ["isLoggedin", "isAdmin"],
     getAll: ["isLoggedin", "isAdmin"],
-    //DISABLING BLUE PRINT
-    create: false,
-    delete: false,
-    update: false,
-    destroy: false,
   },
 
   IdeasController: {
+    //DISABLING ALL BLUE PRINT
+    "*": false,
+
     createIdeas: "isLoggedIn",
     getYourIdeas: "isLoggedIn",
   },
